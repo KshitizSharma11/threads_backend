@@ -27,6 +27,9 @@ class UserService{
         }
     });
     }
+    public static async getUserById(id: string) {
+        return await prismaClient.user.findUnique({ where: { id } });
+      }
     private static getUserByEmail(email: string){
        return prismaClient.user.findUnique({where:{email}});
     }
@@ -46,6 +49,15 @@ class UserService{
 
         return token;
     }
+
+    public static async decodeJWTToken(token: string) {
+        try {
+            return JWT.verify(token, JWT_SECRET);
+        } catch (error) {
+            throw new Error('Token verification failed');
+        }
+    }
+    
 }
 
 export default  UserService;
